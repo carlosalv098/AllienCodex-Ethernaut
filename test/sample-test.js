@@ -1,18 +1,28 @@
 const { expect } = require("chai");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("AlienCodex", function () {
+  it("Should change the owner", async function () {
+    
+    const [deployer, hacker] = await ethers.getSigners();
+    
+    const AllienCodex = await ethers.getContractFactory("AllienCodex", deployer);
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+    this.allienCodex = await AllienCodex.deploy();
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+    console.log(`AllienCodex deployed to: ${this.allienCodex.address}`);
+    console.log(`With onwner: ${await this.allienCodex.owner()}`)
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+    expect(await this.allienCodex.owner()).to.equal(deployer.address)
+    expect(await this.allienCodex.contact()).to.be.false;
+    await this.allienCodex.make_contact();
+    expect(await this.allienCodex.contact()).to.be.true;
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+    await this.allienCodex.retract();
+    let index = ethers.utils.keccak256(ethers.utils.formatBytes32String(1));
+    console.log(index.toString())
+
+    // await this.allienCodex.revise(34, ethers.utils.formatBytes32String(1));
+
+    
   });
 });

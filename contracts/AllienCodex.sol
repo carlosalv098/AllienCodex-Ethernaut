@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 
 import '@openzeppelin/contracts/ownership/Ownable.sol';
 
-contract AlienCodex is Ownable {
+contract AllienCodex is Ownable {
 
   bool public contact;
   bytes32[] public codex;
